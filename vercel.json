@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "public-web/app.py",
+      "src": "admin-crm/app.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "public-web/app.py"
+      "dest": "admin-crm/app.py"
     }
   ]
 }
