@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Game IDs{% endblock %}
+{% block content %}
+<div class="dash-layout">
+  <aside class="sidebar glass-strong">
+    <a href="{{ url_for('dashboard') }}">Overview</a>
+    <a href="{{ url_for('profile') }}">Profile</a>
+    <a href="{{ url_for('game_ids') }}" class="active">Game IDs</a>
+    <a href="{{ url_for('settings') }}">Settings</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </aside>
+  <main class="dash-content">
+    <h1 class="font-display" style="font-size:1.5rem;margin-bottom:0.5rem;">In-Game IDs</h1>
+    <p class="text-muted" style="margin-bottom:1.5rem;">Free Fire UID, PUBG UID, eFootball username, Mobile Legends ID…</p>
+    <form method="POST" class="glass" style="padding:1.5rem;max-width:480px;">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      {% for g in games %}
+      <div class="form-group">
+        <label>{{ g.name }} ID / Username</label>
+        <input type="text" name="uid_{{ g.id }}" value="{{ profiles[g.id].game_uid if profiles.get(g.id) else '' }}" placeholder="Your {{ g.name }} ID">
+      </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-neon btn-block">Save Game IDs</button>
+    </form>
+  </main>
+</div>
+{% endblock %}

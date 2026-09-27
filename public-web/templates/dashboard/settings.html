@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+<div class="dash-layout">
+  <aside class="sidebar glass-strong">
+    <a href="{{ url_for('dashboard') }}">Overview</a>
+    <a href="{{ url_for('wallet_page') }}">Wallet</a>
+    <a href="{{ url_for('profile') }}">Profile</a>
+    <a href="{{ url_for('settings') }}" class="active">Settings</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </aside>
+  <main class="dash-content">
+    <h1 class="font-display" style="font-size:1.5rem;margin-bottom:1.5rem;">Settings</h1>
+    <div class="grid-2" style="gap:1.5rem;max-width:900px;">
+      <div class="glass" style="padding:1.5rem;">
+        <h3 style="margin-bottom:1rem;">Change Password</h3>
+        <form method="POST" action="{{ url_for('change_password') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="form-group"><label>Current Password</label><input type="password" name="current_password" required></div>
+          <div class="form-group"><label>New Password</label><input type="password" name="new_password" required minlength="8"></div>
+          <div class="form-group"><label>Confirm New Password</label><input type="password" name="confirm_password" required></div>
+          <button type="submit" class="btn btn-neon btn-sm">Update Password</button>
+        </form>
+      </div>
+      <div class="glass" style="padding:1.5rem;">
+        {% if not current_user.pin_hash %}
+        <div class="flash flash-warning" style="margin-bottom:1rem;">Set a 6-digit PIN before withdraw or paid joins.</div>
+        {% endif %}
+        <h3 style="margin-bottom:1rem;">Transaction PIN</h3>
+        <form method="POST" action="{{ url_for('set_pin') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="form-group"><label>Account Password</label><input type="password" name="password" required></div>
+          <div class="form-group"><label>New PIN (6 digits)</label><input type="password" name="pin" pattern="[0-9]{6}" maxlength="6" required></div>
+          <div class="form-group"><label>Confirm PIN</label><input type="password" name="confirm_pin" pattern="[0-9]{6}" maxlength="6" required></div>
+          <button type="submit" class="btn btn-outline btn-sm">Set / Update PIN</button>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Room Results{% endblock %}
+{% block content %}
+<h1>Room Results (Pending Review)</h1>
+<table style="width:100%;border-collapse:collapse;margin-top:1rem;">
+  <thead>
+    <tr style="text-align:left;color:#8b949e;">
+      <th style="padding:.5rem;">Room</th>
+      <th>Winner ID</th>
+      <th>Entry × Players</th>
+      <th>Notes</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for r in rooms %}
+  <tr style="border-top:1px solid #21262d;">
+    <td style="padding:.75rem;">#{{ r.id }} {{ r.name }}</td>
+    <td>{{ r.winner_user_id }}</td>
+    <td>₹{{ r.entry_fee }} × players → prize pot</td>
+    <td style="font-size:.85rem;">{{ r.result_notes or '—' }}</td>
+    <td>
+      <form method="POST" action="{{ url_for('room_approve_result', rid=r.id) }}" style="display:inline;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" style="background:#39ff14;color:#0a0a0f;border:none;padding:.3rem .7rem;border-radius:4px;cursor:pointer;font-size:.8rem;">Approve & Pay Winner</button>
+      </form>
+      <form method="POST" action="{{ url_for('room_reject_result', rid=r.id) }}" style="display:inline;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" style="background:#ff4d6a;color:#fff;border:none;padding:.3rem .6rem;border-radius:4px;cursor:pointer;font-size:.8rem;">Reject</button>
+      </form>
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="5" style="padding:1.5rem;color:#8b949e;">No pending results.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

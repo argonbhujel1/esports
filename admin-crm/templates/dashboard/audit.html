@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Audit Logs{% endblock %}
+{% block content %}
+<h1>Audit Logs</h1>
+<table style="width:100%;border-collapse:collapse;margin-top:1rem;">
+  <thead>
+    <tr style="text-align:left;color:#8b949e;">
+      <th style="padding:.5rem;">Time</th>
+      <th>User</th>
+      <th>Action</th>
+      <th>Entity</th>
+      <th>IP</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for log in logs %}
+  <tr style="border-top:1px solid #21262d;">
+    <td style="padding:.6rem;font-size:.85rem;">{{ log.created_at.strftime('%d %b %H:%M') if log.created_at else '—' }}</td>
+    <td>{{ log.user_id or '—' }}</td>
+    <td>{{ log.action }}</td>
+    <td>{{ log.entity or '' }} {{ log.entity_id or '' }}</td>
+    <td style="font-size:.8rem;">{{ log.ip_address or '—' }}</td>
+  </tr>
+  {% else %}
+  <tr><td colspan="5" style="padding:1.5rem;color:#8b949e;">No audit logs.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

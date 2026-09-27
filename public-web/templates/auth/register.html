@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="form-card glass">
+  <h1 class="font-display" style="font-size:1.5rem;text-align:center;margin-bottom:1.5rem;">Join the Arena</h1>
+  <form method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" name="full_name" placeholder="Your full name">
+    </div>
+    <div class="form-group">
+      <label>Username *</label>
+      <input type="text" name="username" required minlength="3" placeholder="Choose a username">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" name="email" placeholder="email@example.com">
+    </div>
+    <div class="form-group">
+      <label>Mobile</label>
+      <input type="text" name="mobile" placeholder="98XXXXXXXX">
+    </div>
+    <div class="form-group">
+      <label>Password *</label>
+      <input type="password" name="password" required minlength="8" placeholder="Min 8 characters">
+    </div>
+    <div class="form-group">
+      <label>Confirm Password *</label>
+      <input type="password" name="confirm_password" required placeholder="Repeat password">
+    </div>
+    <div class="form-group">
+      <label>Referral Code (optional)</label>
+      <input type="text" name="referral_code" placeholder="Friend's code">
+    </div>
+    <button type="submit" class="btn btn-neon" style="width:100%;justify-content:center;">Create Account</button>
+  </form>
+  <p style="text-align:center;margin-top:1.25rem;font-size:0.9rem;color:var(--text-muted);">
+    Already have an account? <a href="{{ url_for('login') }}">Login</a>
+  </p>
+</div>
+{% endblock %}

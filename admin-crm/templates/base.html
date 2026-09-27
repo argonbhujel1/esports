@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Admin{% endblock %} | ESPORTS Worlds CRM</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+  {% if current_user.is_authenticated %}
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="logo">⚡ ESPORTS <span>CRM</span></div>
+      <nav>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('users_list') }}">Users</a>
+        <a href="{{ url_for('agents_list') }}">Agents</a>
+        <a href="{{ url_for('agent_applications') }}">Applications</a>
+        <a href="{{ url_for('games_list') }}">Games</a>
+        <a href="{{ url_for('claims_list') }}">Winning Claims</a>
+        <a href="{{ url_for('withdrawals_list') }}">Withdrawals</a>
+        <a href="{{ url_for('deposits_list') }}">Deposits</a>
+        <a href="{{ url_for('payments_list') }}">Payments / QR</a>
+        <a href="{{ url_for('cms_branding') }}">Logo / BG</a>
+        <a href="{{ url_for('cms') }}">CMS</a>
+        <a href="{{ url_for('audit_logs') }}">Audit Logs</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+      </nav>
+    </aside>
+    <main class="content">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for cat, msg in messages %}<div class="flash flash-{{ cat }}">{{ msg }}</div>{% endfor %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+  {% else %}
+    {% block auth %}{% endblock %}
+  {% endif %}
+</body>
+</html>

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Add Money{% endblock %}
+{% block content %}
+<div class="dash-layout">
+  <aside class="sidebar glass-strong">
+    <a href="{{ url_for('dashboard') }}">Overview</a>
+    <a href="{{ url_for('wallet_page') }}" class="active">Wallet</a>
+    <a href="{{ url_for('profile') }}">Profile</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </aside>
+  <main class="dash-content">
+    <h1 class="font-display" style="font-size:1.5rem;margin-bottom:1rem;">Add Money</h1>
+    <form method="POST" enctype="multipart/form-data" class="glass" style="padding:1.5rem;max-width:520px;">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="form-group"><label>Amount (₹)</label><input type="number" name="amount" step="0.01" min="10" required placeholder="100"></div>
+      <div class="form-group">
+        <label>Add via</label>
+        <select name="via" id="viaSelect" required>
+          <option value="admin">Admin (Official QR / Bank)</option>
+          <option value="agent">Agent</option>
+        </select>
+      </div>
+      <div class="form-group" id="adminMethods">
+        <label>Payment Method</label>
+        <select name="payment_method_id">
+          {% for m in methods %}
+          <option value="{{ m.id }}">{{ m.name }} {% if m.provider %}({{ m.provider }}){% endif %}</option>
+          {% else %}
+          <option value="">No methods configured</option>
+          {% endfor %}
+        </select>
+        {% for m in methods %}
+          {% if m.qr_code_url %}
+          <div style="margin-top:0.75rem;">
+            <p class="text-muted" style="font-size:.8rem;">{{ m.name }} QR — pay then upload receipt below:</p>
+            <img src="{{ m.qr_code_url }}" alt="QR" style="max-width:180px;border-radius:8px;margin-top:0.3rem;">
+          </div>
+          {% endif %}
+          {% if m.instructions %}<p class="text-muted" style="font-size:.8rem;margin-top:0.5rem;">{{ m.instructions }}</p>{% endif %}
+        {% endfor %}
+      </div>
+      <div class="form-group" id="agentSelect" style="display:none;">
+        <label>Select Agent</label>
+        <select name="agent_id">
+          {% for a in agents %}
+          <option value="{{ a.id }}">{{ a.user.username if a.user else 'Agent #' ~ a.id }}</option>
+          {% else %}
+          <option value="">No active agents</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Payment Receipt / Screenshot (required)</label>
+        <input type="file" name="receipt_file" accept="image/*" required>
+      </div>
+      <div class="form-group"><label>Payment Reference / Note</label><input type="text" name="payment_reference" placeholder="Transaction ID"></div>
+      <button type="submit" class="btn btn-neon btn-block">Submit Request</button>
+    </form>
+  </main>
+</div>
+<script>
+document.getElementById('viaSelect').addEventListener('change', function() {
+  document.getElementById('adminMethods').style.display = this.value === 'admin' ? 'block' : 'none';
+  document.getElementById('agentSelect').style.display = this.value === 'agent' ? 'block' : 'none';
+});
+</script>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+<div class="stats-grid">
+  <div class="stat"><div class="num">{{ stats.total_users }}</div><div class="lbl">Total Users</div></div>
+  <div class="stat"><div class="num">{{ stats.active_users }}</div><div class="lbl">Active Users</div></div>
+  <div class="stat"><div class="num">{{ stats.total_agents }}</div><div class="lbl">Agents</div></div>
+  <div class="stat"><div class="num">{{ stats.active_agents }}</div><div class="lbl">Active Agents</div></div>
+  <div class="stat"><div class="num">{{ stats.pending_claims }}</div><div class="lbl">Pending Claims</div></div>
+  <div class="stat"><div class="num">{{ stats.pending_withdrawals }}</div><div class="lbl">Pending Withdrawals</div></div>
+  <div class="stat"><div class="num">{{ stats.pending_deposits }}</div><div class="lbl">Pending Deposits</div></div>
+  <div class="stat"><div class="num">{{ stats.live_rooms }}</div><div class="lbl">Live Rooms</div></div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Transactions{% endblock %}
+{% block content %}
+<div class="dash-layout">
+  <aside class="sidebar glass-strong">
+    <a href="{{ url_for('dashboard') }}">Overview</a>
+    <a href="{{ url_for('wallet_page') }}">Wallet</a>
+    <a href="#" class="active">Transactions</a>
+    <a href="{{ url_for('profile') }}">Profile</a>
+    <a href="{{ url_for('settings') }}">Settings</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </aside>
+  <main class="dash-content">
+    <h1 class="font-display" style="font-size:1.5rem;margin-bottom:1.5rem;">All Transactions</h1>
+    <div class="glass table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Balance After</th>
+            <th>Date</th>
+            <th>Reference</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tx in transactions %}
+          <tr>
+            <td>{{ tx.type }}</td>
+            <td style="color:{% if tx.type in ['PRIZE','BONUS','REFUND','AGENT_LOAD','ADMIN_LOAD','REFERRAL'] %}var(--neon-green){% else %}var(--neon-pink){% endif %};">
+              {% if tx.type in ['PRIZE','BONUS','REFUND','AGENT_LOAD','ADMIN_LOAD','REFERRAL'] %}+{% else %}-{% endif %}₹{{ "%.2f"|format(tx.amount) }}
+            </td>
+            <td>{{ tx.status }}</td>
+            <td>₹{{ "%.2f"|format(tx.balance_after) }}</td>
+            <td>{{ tx.created_at.strftime('%d %b %Y %H:%M') if tx.created_at else '—' }}</td>
+            <td class="text-muted" style="font-size:.8rem;">{{ tx.reference }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6" style="text-align:center;padding:2rem;" class="text-muted">No transactions yet</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+{% endblock %}

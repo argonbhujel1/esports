@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}CMS{% endblock %}
+{% block content %}
+<h1>CMS Settings</h1>
+<p style="margin:0.5rem 0 1rem;"><a href="{{ url_for('cms_branding') }}" style="color:#00f5ff;">Logo / Favicon / Background →</a></p>
+<table style="width:100%;border-collapse:collapse;">
+  <thead>
+    <tr style="text-align:left;color:#8b949e;">
+      <th style="padding:.5rem;">Key</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for key, val in settings.items() %}
+  <tr style="border-top:1px solid #21262d;">
+    <td style="padding:.75rem;">{{ key }}</td>
+    <td style="font-size:.9rem;">
+      {% if val is mapping and val.get('url') %}
+        <img src="{{ val.url }}" alt="" style="max-height:48px;border-radius:4px;vertical-align:middle;" onerror="this.outerHTML='{{ val.url }}'">
+        <span style="color:#8b949e;font-size:.75rem;margin-left:.5rem;">{{ val.url[:50] }}…</span>
+      {% else %}
+        {{ val }}
+      {% endif %}
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="2" style="padding:1.5rem;color:#8b949e;">No CMS settings yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

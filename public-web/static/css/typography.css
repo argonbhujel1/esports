@@ -1,0 +1,9 @@
+body{font-family:var(--font-body);color:var(--text)}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:700;line-height:1.2}
+.font-display{font-family:var(--font-display)}
+.text-muted{color:var(--text-muted)}
+.text-cyan{color:var(--neon-cyan)}
+.text-pink{color:var(--neon-pink)}
+.text-green{color:var(--neon-green)}
+.neon-text{text-shadow:0 0 12px rgba(0,245,255,.5)}
+.neon-pink{color:var(--neon-pink);text-shadow:0 0 12px rgba(255,0,170,.4)}

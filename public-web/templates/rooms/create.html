@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Create Room{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:6rem;">
+  <h1 class="font-display" style="font-size:1.6rem;margin-bottom:1.5rem;">Create Custom Room</h1>
+  <form method="POST" class="glass" style="padding:1.5rem;max-width:480px;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="form-group">
+      <label>Game</label>
+      <select name="game_id" required>
+        <option value="">Select game</option>
+        {% for g in games %}
+        <option value="{{ g.id }}">{{ g.name }}</option>
+        {% endfor %}
+      </select>
+      <p class="text-muted" style="font-size:.8rem;margin-top:.3rem;">eFootball = 1v1 (max 2 players auto)</p>
+    </div>
+    <div class="form-group"><label>Room Name</label><input type="text" name="name" required placeholder="e.g. Free Fire Duo Night"></div>
+    <div class="form-group"><label>Entry Fee (₹)</label><input type="number" name="entry_fee" step="0.01" min="0" value="0" required></div>
+    <div class="form-group"><label>Max Players</label><input type="number" name="max_players" min="2" value="100" required></div>
+    <div class="form-group"><label><input type="checkbox" name="is_public" checked> Public room</label></div>
+    <button type="submit" class="btn btn-neon btn-block">Create Room</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Wallet{% endblock %}
+{% block content %}
+<div class="dash-layout">
+  <aside class="sidebar glass-strong">
+    <a href="{{ url_for('dashboard') }}">Overview</a>
+    <a href="{{ url_for('wallet_page') }}" class="active">Wallet</a>
+    <a href="{{ url_for('profile') }}">Profile</a>
+    <a href="{{ url_for('settings') }}">Settings</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </aside>
+  <main class="dash-content">
+    <h1 class="font-display" style="font-size:1.5rem;margin-bottom:1.5rem;">My Wallet</h1>
+    <div class="balance-cards">
+      <div class="balance-card glass available">
+        <div class="label">Available</div>
+        <div class="value">₹{{ "%.2f"|format(wallet.available_balance) if wallet else "0.00" }}</div>
+      </div>
+      <div class="balance-card glass locked">
+        <div class="label">Locked</div>
+        <div class="value">₹{{ "%.2f"|format(wallet.locked_balance) if wallet else "0.00" }}</div>
+      </div>
+      <div class="balance-card glass bonus">
+        <div class="label">Locked in Entry</div>
+        <div class="value">₹{{ "%.2f"|format(wallet.bonus_balance) if wallet else "0.00" }}</div>
+      </div>
+    </div>
+    <h2 style="font-size:1.1rem;margin:1.5rem 0 1rem;">Payment Methods</h2>
+    <div class="grid-3">
+      {% for m in payment_methods %}
+      <div class="card glass">
+        <h3 style="font-weight:600;">{{ m.name }}</h3>
+        <p class="text-muted" style="font-size:.85rem;margin-top:.3rem;">{{ m.provider or m.type }}</p>
+        {% if m.instructions %}<p style="font-size:.8rem;margin-top:.5rem;">{{ m.instructions[:80] }}…</p>{% endif %}
+      </div>
+      {% else %}
+      <p class="text-muted">No payment methods configured yet.</p>
+      {% endfor %}
+    </div>
+    <h2 style="font-size:1.1rem;margin:2rem 0 1rem;">Recent Transactions</h2>
+    <div class="glass table-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Amount</th><th>Status</th><th>Date</th><th>Ref</th></tr></thead>
+        <tbody>
+          {% for tx in transactions %}
+          <tr>
+            <td>{{ tx.type }}</td>
+            <td>₹{{ "%.2f"|format(tx.amount) }}</td>
+            <td>{{ tx.status }}</td>
+            <td>{{ tx.created_at.strftime('%d %b %Y') if tx.created_at else '—' }}</td>
+            <td class="text-muted" style="font-size:.8rem;">{{ tx.reference }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="5" style="text-align:center;padding:2rem;" class="text-muted">No transactions</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+{% endblock %}

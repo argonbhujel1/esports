@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Rooms{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:6rem;">
+  <div class="section-header">
+    <h1 class="section-title">🏠 Rooms</h1>
+    {% if current_user.is_authenticated %}
+    <a href="{{ url_for('create_room') }}" class="btn btn-neon btn-sm">+ Create Room</a>
+    {% endif %}
+  </div>
+  <div class="glass table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Room</th>
+          <th>Game</th>
+          <th>Entry Fee</th>
+          <th>Players</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for room in rooms %}
+        <tr>
+          <td style="font-weight:500;">
+            <a href="{{ url_for('room_detail', room_id=room.id) }}" style="color:var(--neon-cyan);">{{ room.name }}</a>
+          </td>
+          <td>{{ room.game.name if room.game else '—' }}</td>
+          <td>₹{{ room.entry_fee }}</td>
+          <td>{{ room.players|length if room.players else 0 }}/{{ room.max_players }}</td>
+          <td><span class="text-cyan">{{ room.status }}</span></td>
+          <td>
+            <a href="{{ url_for('room_detail', room_id=room.id) }}" class="btn btn-outline btn-sm">View / Join</a>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" style="text-align:center;padding:2rem;" class="text-muted">No rooms open. Create one!</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

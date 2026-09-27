@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Agents{% endblock %}
+{% block content %}
+<h1>Agents</h1>
+<p style="margin:.5rem 0 1rem;"><a href="{{ url_for('agent_applications') }}" style="color:#00f5ff;">View Applications →</a></p>
+<table style="width:100%;border-collapse:collapse;">
+  <thead>
+    <tr style="text-align:left;color:#8b949e;">
+      <th style="padding:.5rem;">ID</th>
+      <th>User</th>
+      <th>Status</th>
+      <th>Commission %</th>
+      <th>Total Loaded</th>
+      <th>Total Commission</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for a in agents %}
+  <tr style="border-top:1px solid #21262d;">
+    <td style="padding:.75rem;">{{ a.id }}</td>
+    <td>{{ a.user.username if a.user else a.user_id }}</td>
+    <td>{{ a.status }}</td>
+    <td>{{ a.commission_rate }}</td>
+    <td>₹{{ a.total_loaded or 0 }}</td>
+    <td>₹{{ a.total_commission or 0 }}</td>
+    <td>
+      {% if a.status != 'ACTIVE' %}
+      <form method="POST" action="{{ url_for('agent_approve', agent_id=a.id) }}" style="display:inline;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" style="background:#39ff14;color:#0a0a0f;border:none;padding:.3rem .7rem;border-radius:4px;cursor:pointer;font-size:.8rem;">Activate</button>
+      </form>
+      {% else %}Active{% endif %}
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="7" style="padding:1.5rem;color:#8b949e;">No agents yet. Check Applications.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Games{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:6rem;">
+  <div class="section-header"><h1 class="section-title">🎮 Games</h1></div>
+  <div class="grid-5">
+    {% for game in games %}
+    <a href="{{ url_for('game_detail', slug=game.slug) }}" class="card glass">
+      <div class="card-icon">🎯</div>
+      <h3 style="font-weight:600;">{{ game.name }}</h3>
+      <p class="text-muted" style="font-size:.8rem;margin-top:.3rem;">{{ game.description or 'Compete now' }}</p>
+    </a>
+    {% else %}
+    <p class="text-muted">No games available yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

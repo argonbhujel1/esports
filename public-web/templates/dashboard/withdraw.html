@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Withdraw{% endblock %}
+{% block content %}
+<div class="dash-layout">
+  <aside class="sidebar glass-strong">
+    <a href="{{ url_for('dashboard') }}">Overview</a>
+    <a href="{{ url_for('wallet_page') }}" class="active">Wallet</a>
+    <a href="{{ url_for('profile') }}">Profile</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </aside>
+  <main class="dash-content">
+    <h1 class="font-display" style="font-size:1.5rem;margin-bottom:0.5rem;">Withdraw</h1>
+    <p class="text-muted" style="margin-bottom:0.5rem;">Available: ₹{{ "%.2f"|format(wallet.available_balance) if wallet else "0.00" }}</p>
+    <div class="flash flash-warning" style="max-width:480px;margin-bottom:1rem;">
+      <strong>6% service charge</strong> applies on every withdrawal.
+      Example: withdraw ₹1000 → fee ₹60 → you receive ₹940.
+    </div>
+    <form method="POST" class="glass" style="padding:1.5rem;max-width:480px;" id="wdForm">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="form-group"><label>Amount (₹)</label><input type="number" name="amount" id="wdAmount" step="0.01" min="10" required></div>
+      <p class="text-muted" style="font-size:.85rem;margin:-0.5rem 0 1rem;" id="feePreview">Fee (6%): — · You receive: —</p>
+      <div class="form-group">
+        <label>Payment Method</label>
+        <select name="payment_method" required>
+          <option value="eSewa">eSewa</option>
+          <option value="Khalti">Khalti</option>
+          <option value="Bank">Bank Transfer</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Provider / Bank Name</label><input type="text" name="provider" placeholder="e.g. Nabil Bank"></div>
+      <div class="form-group"><label>Account Name</label><input type="text" name="account_name" required></div>
+      <div class="form-group"><label>Account Number / ID</label><input type="text" name="account_number" required></div>
+      <div class="form-group"><label>Transaction PIN</label><input type="password" name="pin" pattern="[0-9]{6}" maxlength="6" required placeholder="6-digit PIN"></div>
+      <button type="submit" class="btn btn-neon btn-block">Submit Withdrawal</button>
+    </form>
+  </main>
+</div>
+<script>
+document.getElementById('wdAmount').addEventListener('input', function() {
+  var a = parseFloat(this.value) || 0;
+  var fee = Math.round(a * 0.06 * 100) / 100;
+  var net = Math.round((a - fee) * 100) / 100;
+  document.getElementById('feePreview').textContent = 'Fee (6%): ₹' + fee.toFixed(2) + ' · You receive: ₹' + net.toFixed(2);
+});
+</script>
+{% endblock %}

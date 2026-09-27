@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Create Tournament{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:6rem;">
+  <h1 class="font-display" style="font-size:1.6rem;margin-bottom:1.5rem;">Create Tournament</h1>
+  <p class="text-muted" style="margin-bottom:1rem;">Free Fire · PUBG · eFootball · Mobile Legends</p>
+  <form method="POST" class="glass" style="padding:1.5rem;max-width:480px;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="form-group">
+      <label>Game</label>
+      <select name="game_id" required>
+        <option value="">Select game</option>
+        {% for g in games %}
+        <option value="{{ g.id }}">{{ g.name }}</option>
+        {% endfor %}
+      </select>
+      <p class="text-muted" style="font-size:.8rem;margin-top:.3rem;">eFootball = 1v1 (max 2 players auto)</p>
+    </div>
+    <div class="form-group"><label>Tournament Name</label><input type="text" name="name" required></div>
+    <div class="form-group"><label>Description</label><textarea name="description" rows="3"></textarea></div>
+    <div class="form-group"><label>Entry Fee (₹)</label><input type="number" name="entry_fee" step="0.01" min="0" value="0" required></div>
+    <div class="form-group"><label>Prize Pool (₹)</label><input type="number" name="prize_pool" step="0.01" min="0" value="0" required></div>
+    <div class="form-group"><label>Max Players</label><input type="number" name="max_players" min="2" value="50" required></div>
+    <button type="submit" class="btn btn-neon btn-block">Create Tournament</button>
+  </form>
+</section>
+{% endblock %}

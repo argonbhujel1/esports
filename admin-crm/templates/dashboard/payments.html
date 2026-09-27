@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Payment Methods{% endblock %}
+{% block content %}
+<h1>Payment Methods</h1>
+<p style="margin-bottom:1rem;"><a href="{{ url_for('payment_create') }}" style="color:#00f5ff;">+ Add Method (QR upload)</a></p>
+<table style="width:100%;border-collapse:collapse;">
+  <thead><tr style="text-align:left;color:#8b949e;"><th style="padding:.5rem;">Name</th><th>Type</th><th>Provider</th><th>QR / Image</th><th>Active</th><th></th></tr></thead>
+  <tbody>
+  {% for m in methods %}
+  <tr style="border-top:1px solid #21262d;">
+    <td style="padding:.75rem;">{{ m.name }}</td>
+    <td>{{ m.type }}</td>
+    <td>{{ m.provider or '—' }}</td>
+    <td>
+      {% if m.qr_code_url %}
+      <a href="{{ m.qr_code_url }}" target="_blank">
+        <img src="{{ m.qr_code_url }}" alt="QR" style="height:56px;width:56px;object-fit:contain;border-radius:6px;background:#0d1117;border:1px solid #30363d;" onerror="this.alt='broken';this.style.border='1px solid red';">
+      </a>
+      {% else %}—{% endif %}
+    </td>
+    <td>{{ 'Yes' if m.is_active else 'No' }}</td>
+    <td>
+      <form method="POST" action="{{ url_for('payment_toggle', mid=m.id) }}" style="display:inline;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" style="color:#00f5ff;background:none;border:none;cursor:pointer;">Toggle</button>
+      </form>
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="6" style="padding:1rem;color:#8b949e;">No payment methods yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

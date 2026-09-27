@@ -1,0 +1,1 @@
+// Optional hero animation placeholder

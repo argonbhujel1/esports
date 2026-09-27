@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="dash-layout">
+  <aside class="sidebar glass-strong">
+    <a href="{{ url_for('dashboard') }}" class="active">Overview</a>
+    <a href="{{ url_for('wallet_page') }}">Wallet</a>
+    <a href="{{ url_for('profile') }}">Profile</a>
+    <a href="{{ url_for('game_ids') }}">Game IDs</a>
+    <a href="{{ url_for('settings') }}">Settings</a>
+    <a href="{{ url_for('rooms_list') }}">Rooms</a>
+    <a href="{{ url_for('tournaments_list') }}">Tournaments</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </aside>
+  <main class="dash-content">
+    <h1 class="font-display" style="font-size:1.6rem;margin-bottom:1.5rem;">Hey, {{ current_user.username }} 👋</h1>
+
+    <div class="balance-cards">
+      <div class="balance-card glass available">
+        <div class="label">Available Balance</div>
+        <div class="value">₹{{ "%.2f"|format(wallet.available_balance) if wallet else "0.00" }}</div>
+      </div>
+      <div class="balance-card glass locked">
+        <div class="label">Locked Balance</div>
+        <div class="value">₹{{ "%.2f"|format(wallet.locked_balance) if wallet else "0.00" }}</div>
+      </div>
+      <div class="balance-card glass bonus">
+        <div class="label">Locked in Entry</div>
+        <div class="value">₹{{ "%.2f"|format(wallet.bonus_balance) if wallet else "0.00" }}</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:0.75rem;margin-bottom:2rem;flex-wrap:wrap;">
+      <a href="{{ url_for('add_money') }}" class="btn btn-neon">+ Add Money</a>
+      <a href="{{ url_for('create_room') }}" class="btn btn-outline">Create Room</a>
+      <a href="{{ url_for('create_tournament') }}" class="btn btn-outline">Create Tournament</a>
+      <a href="{{ url_for('become_agent') }}" class="btn btn-outline">Become Agent</a>
+      <a href="{{ url_for('withdraw') }}" class="btn btn-outline">Withdraw</a>
+      <a href="{{ url_for('rooms_list') }}" class="btn btn-outline">Join Room</a>
+      <a href="{{ url_for('tournaments_list') }}" class="btn btn-outline">Join Tournament</a>
+    </div>
+
+    <h2 style="font-size:1.1rem;margin-bottom:1rem;">Recent Transactions</h2>
+    <div class="glass table-wrap">
+      <table>
+        <thead>
+          <tr><th>Type</th><th>Amount</th><th>Status</th><th>Date</th><th>Ref</th></tr>
+        </thead>
+        <tbody>
+          {% for tx in recent_tx %}
+          <tr>
+            <td>{{ tx.type }}</td>
+            <td style="color:{% if tx.type in ['PRIZE','BONUS','REFUND','AGENT_LOAD','ADMIN_LOAD'] %}var(--neon-green){% else %}var(--neon-pink){% endif %};">
+              {% if tx.type in ['PRIZE','BONUS','REFUND','AGENT_LOAD','ADMIN_LOAD'] %}+{% else %}-{% endif %}₹{{ "%.2f"|format(tx.amount) }}
+            </td>
+            <td>{{ tx.status }}</td>
+            <td>{{ tx.created_at.strftime('%d %b %Y %H:%M') if tx.created_at else '—' }}</td>
+            <td style="font-size:0.8rem;color:var(--text-muted);">{{ tx.reference }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text-muted);">No transactions yet</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+{% endblock %}

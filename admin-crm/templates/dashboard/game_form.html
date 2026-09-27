@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if game else 'Create' }} Game{% endblock %}
+{% block content %}
+<h1>{{ 'Edit' if game else 'Create' }} Game</h1>
+<form method="POST" enctype="multipart/form-data" style="max-width:420px;background:#161b22;padding:1.5rem;border-radius:10px;border:1px solid #21262d;">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label style="display:block;margin:.5rem 0 .2rem;color:#8b949e;font-size:.85rem;">Name</label>
+  <input name="name" required value="{{ game.name if game else '' }}" style="width:100%;padding:.6rem;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e2e8f0;">
+  {% if not game %}
+  <label style="display:block;margin:.5rem 0 .2rem;color:#8b949e;font-size:.85rem;">Slug</label>
+  <input name="slug" required placeholder="pubg-mobile" style="width:100%;padding:.6rem;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e2e8f0;">
+  {% endif %}
+  <label style="display:block;margin:.5rem 0 .2rem;color:#8b949e;font-size:.85rem;">Description</label>
+  <textarea name="description" rows="3" style="width:100%;padding:.6rem;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e2e8f0;">{{ game.description if game else '' }}</textarea>
+  <label style="display:block;margin:.5rem 0 .2rem;color:#8b949e;font-size:.85rem;">Sort Order</label>
+  <input name="sort_order" type="number" value="{{ game.sort_order if game else 0 }}" style="width:100%;padding:.6rem;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e2e8f0;">
+  <label style="display:block;margin:.5rem 0 .2rem;color:#8b949e;font-size:.85rem;">Icon Image</label>
+  <input type="file" name="icon_file" accept="image/*" style="width:100%;padding:.5rem;color:#e2e8f0;">
+  {% if game and game.icon_url %}
+  <img src="{{ game.icon_url }}" style="height:40px;margin-top:.5rem;border-radius:6px;">
+  {% endif %}
+  {% if game %}
+  <label style="display:flex;align-items:center;gap:.5rem;margin-top:1rem;color:#8b949e;">
+    <input type="checkbox" name="is_active" {% if game.is_active %}checked{% endif %}> Active
+  </label>
+  {% endif %}
+  <button type="submit" style="margin-top:1rem;width:100%;padding:.75rem;background:linear-gradient(135deg,#00f5ff,#b026ff);border:none;border-radius:6px;font-weight:600;cursor:pointer;">Save</button>
+</form>
+{% endblock %}

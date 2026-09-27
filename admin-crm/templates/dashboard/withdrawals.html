@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Withdrawals{% endblock %}
+{% block content %}
+<h1>Withdrawals</h1>
+<div style="margin:1rem 0;display:flex;gap:.5rem;flex-wrap:wrap;">
+  {% for s in ['PENDING','PROCESSING','PAID','REJECTED'] %}
+  <a href="?status={{ s }}" style="padding:.35rem .8rem;border-radius:6px;font-size:.85rem;{% if current_status==s %}background:#00f5ff;color:#0a0a0f;{% else %}background:#21262d;color:#8b949e;{% endif %}">{{ s }}</a>
+  {% endfor %}
+</div>
+<table style="width:100%;border-collapse:collapse;">
+  <thead>
+    <tr style="text-align:left;color:#8b949e;">
+      <th style="padding:.5rem;">ID</th>
+      <th>User</th>
+      <th>Amount</th>
+      <th>Method</th>
+      <th>Account</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for w in withdrawals %}
+  <tr style="border-top:1px solid #21262d;">
+    <td style="padding:.75rem;">#{{ w.id }}</td>
+    <td>{{ w.user_id }}</td>
+    <td>₹{{ w.amount }}{% if w.account_details and w.account_details.get('net_amount') %}<br><span style="font-size:.75rem;color:#8b949e;">Net: ₹{{ w.account_details.net_amount }}</span>{% endif %}</td>
+    <td>{{ w.payment_method }}</td>
+    <td style="font-size:.85rem;">
+      {% if w.account_details %}
+      {{ w.account_details.get('account_name','') }}<br>{{ w.account_details.get('account_number','') }}
+      {% endif %}
+    </td>
+    <td>{{ w.status }}</td>
+    <td>
+      {% if w.status in ['PENDING','PROCESSING'] %}
+      <form method="POST" action="{{ url_for('withdrawal_pay', wid=w.id) }}" style="display:inline;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="text" name="payment_reference" placeholder="Ref" style="width:80px;padding:.2rem;background:#0d1117;border:1px solid #30363d;color:#e2e8f0;border-radius:4px;font-size:.8rem;">
+        <button type="submit" style="background:#39ff14;color:#0a0a0f;border:none;padding:.3rem .5rem;border-radius:4px;cursor:pointer;font-size:.75rem;">Pay</button>
+      </form>
+      <form method="POST" action="{{ url_for('withdrawal_reject', wid=w.id) }}" style="display:inline;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" style="background:#ff4d6a;color:#fff;border:none;padding:.3rem .5rem;border-radius:4px;cursor:pointer;font-size:.75rem;">Reject</button>
+      </form>
+      {% else %}—{% endif %}
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="7" style="padding:1.5rem;color:#8b949e;">No withdrawals.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

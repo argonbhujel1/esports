@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="dash-layout">
+  <aside class="sidebar glass-strong">
+    <a href="{{ url_for('dashboard') }}">Overview</a>
+    <a href="{{ url_for('wallet_page') }}">Wallet</a>
+    <a href="{{ url_for('profile') }}" class="active">Profile</a>
+    <a href="{{ url_for('game_ids') }}">Game IDs</a>
+    <a href="{{ url_for('settings') }}">Settings</a>
+    <a href="{{ url_for('become_agent') }}">Become Agent</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </aside>
+  <main class="dash-content">
+    <h1 class="font-display" style="font-size:1.5rem;margin-bottom:1.5rem;">My Profile</h1>
+    <div class="glass" style="padding:2rem;max-width:520px;">
+      <div style="display:flex;align-items:center;gap:1.25rem;margin-bottom:1.5rem;">
+        {% if current_user.avatar %}
+        <img src="{{ current_user.avatar }}" alt="avatar" style="width:88px;height:88px;border-radius:50%;object-fit:cover;border:2px solid var(--neon-cyan);">
+        {% else %}
+        <div style="width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,var(--neon-cyan),var(--neon-purple));display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700;color:#0a0a0f;">
+          {{ (current_user.full_name or current_user.username)[0]|upper }}
+        </div>
+        {% endif %}
+        <div>
+          <div class="font-display" style="font-size:1.3rem;">{{ current_user.full_name or current_user.username }}</div>
+          <div class="text-muted">@{{ current_user.username }}</div>
+          <div class="text-muted" style="font-size:.8rem;margin-top:.25rem;">{{ current_user.role }}</div>
+        </div>
+      </div>
+      <form method="POST" action="{{ url_for('update_profile') }}" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-group"><label>Display Name</label><input type="text" name="full_name" value="{{ current_user.full_name or '' }}" placeholder="Your name"></div>
+        <div class="form-group"><label>Profile Photo</label><input type="file" name="avatar_file" accept="image/*"></div>
+        <p class="text-muted" style="font-size:.8rem;margin-bottom:1rem;">Email: {{ current_user.email or '—' }} · Mobile: {{ current_user.mobile or '—' }}</p>
+        <p class="text-muted" style="font-size:.8rem;margin-bottom:1rem;">Referral: <span class="text-cyan">{{ current_user.referral_code }}</span></p>
+        <button type="submit" class="btn btn-neon">Save Profile</button>
+      </form>
+      <p style="margin-top:1.25rem;font-size:.9rem;"><a href="{{ url_for('settings') }}">Password & PIN → Settings</a></p>
+    </div>
+  </main>
+</div>
+{% endblock %}

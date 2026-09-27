@@ -1,0 +1,1 @@
+// Optional decorative background effect

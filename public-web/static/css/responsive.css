@@ -1,0 +1,13 @@
+@media(max-width:768px){
+  .nav-links{display:none}
+  .dash-layout{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .hero{padding-top:6rem}
+  .section{padding:2.5rem 1rem}
+  .grid-5{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+  .hero h1{font-size:2rem}
+  .grid-5{grid-template-columns:1fr}
+  .hero-actions{flex-direction:column;align-items:center}
+}

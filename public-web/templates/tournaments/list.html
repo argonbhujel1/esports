@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Tournaments{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:6rem;">
+  <div class="section-header">
+    <h1 class="section-title">🏆 Tournaments</h1>
+    {% if current_user.is_authenticated %}
+    <a href="{{ url_for('create_tournament') }}" class="btn btn-neon btn-sm">+ Create Tournament</a>
+    {% endif %}
+  </div>
+  <div class="glass table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Tournament</th>
+          <th>Game</th>
+          <th>Entry</th>
+          <th>Prize Pool</th>
+          <th>Players</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in tournaments %}
+        <tr>
+          <td style="font-weight:500;">
+            <a href="{{ url_for('tournament_detail', tid=t.id) }}" style="color:var(--neon-cyan);">{{ t.name }}</a>
+          </td>
+          <td>{{ t.game.name if t.game else '—' }}</td>
+          <td>₹{{ t.entry_fee }}</td>
+          <td class="text-green">₹{{ t.prize_pool }}</td>
+          <td>{{ t.players|length if t.players else 0 }}/{{ t.max_players }}</td>
+          <td><span class="text-cyan">{{ t.status }}</span></td>
+          <td>
+            <a href="{{ url_for('tournament_detail', tid=t.id) }}" class="btn btn-outline btn-sm">View / Join</a>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" style="text-align:center;padding:2rem;" class="text-muted">No tournaments yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

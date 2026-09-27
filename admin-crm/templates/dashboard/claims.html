@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Winning Claims{% endblock %}
+{% block content %}
+<h1>Winning Claims</h1>
+<div style="margin:1rem 0;display:flex;gap:.5rem;flex-wrap:wrap;">
+  {% for s in ['PENDING','APPROVED','REJECTED'] %}
+  <a href="?status={{ s }}" style="padding:.35rem .8rem;border-radius:6px;font-size:.85rem;{% if current_status==s %}background:#00f5ff;color:#0a0a0f;{% else %}background:#21262d;color:#8b949e;{% endif %}">{{ s }}</a>
+  {% endfor %}
+</div>
+<table style="width:100%;border-collapse:collapse;">
+  <thead>
+    <tr style="text-align:left;color:#8b949e;">
+      <th style="padding:.5rem;">ID</th>
+      <th>User</th>
+      <th>Amount</th>
+      <th>Status</th>
+      <th>Proof</th>
+      <th>Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for c in claims %}
+  <tr style="border-top:1px solid #21262d;">
+    <td style="padding:.75rem;">#{{ c.id }}</td>
+    <td>{{ c.user_id }}</td>
+    <td>₹{{ c.amount }}</td>
+    <td>{{ c.status }}</td>
+    <td>
+      {% if c.proof_urls %}
+        {% for u in c.proof_urls %}
+        <a href="{{ u }}" target="_blank" style="color:#00f5ff;">Img</a>
+        {% endfor %}
+      {% else %}—{% endif %}
+    </td>
+    <td>{{ c.created_at.strftime('%d %b %Y') if c.created_at else '—' }}</td>
+    <td>
+      {% if c.status == 'PENDING' %}
+      <form method="POST" action="{{ url_for('claim_approve', claim_id=c.id) }}" style="display:inline;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" style="background:#39ff14;color:#0a0a0f;border:none;padding:.3rem .6rem;border-radius:4px;cursor:pointer;font-size:.75rem;">Approve</button>
+      </form>
+      <form method="POST" action="{{ url_for('claim_reject', claim_id=c.id) }}" style="display:inline;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" style="background:#ff4d6a;color:#fff;border:none;padding:.3rem .6rem;border-radius:4px;cursor:pointer;font-size:.75rem;">Reject</button>
+      </form>
+      {% else %}—{% endif %}
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="7" style="padding:1.5rem;color:#8b949e;">No claims.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

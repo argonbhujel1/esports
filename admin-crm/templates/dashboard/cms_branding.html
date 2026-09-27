@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Branding{% endblock %}
+{% block content %}
+<h1>Logo / Favicon / Homepage Background</h1>
+<p style="color:#8b949e;margin-bottom:1rem;font-size:.9rem;">Upload images here. They appear on the public website after save. Use PNG/JPG/WebP.</p>
+<form method="POST" enctype="multipart/form-data" style="max-width:520px;background:#161b22;padding:1.5rem;border-radius:10px;border:1px solid #21262d;margin-top:0.5rem;">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label style="display:block;margin:.5rem 0 .2rem;color:#8b949e;">Site Name</label>
+  <input name="site_name" value="{{ settings.get('site_name', {}).get('text', 'ESPORTS Worlds') }}" style="width:100%;padding:.6rem;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e2e8f0;">
+
+  <label style="display:block;margin:1rem 0 .2rem;color:#8b949e;">Logo (navbar)</label>
+  <input type="file" name="logo_file" accept="image/*" style="width:100%;padding:.5rem;color:#e2e8f0;">
+  {% if settings.get('logo_url', {}).get('url') %}
+  <div style="margin-top:.5rem;">
+    <img src="{{ settings.logo_url.url }}" alt="logo" style="height:48px;max-width:160px;object-fit:contain;background:#0d1117;padding:4px;border-radius:6px;border:1px solid #30363d;" onerror="this.insertAdjacentHTML('afterend','<span style=color:#ff4d6a>Image failed to load: {{ settings.logo_url.url }}</span>')">
+    <p style="font-size:.75rem;color:#8b949e;margin-top:.25rem;">{{ settings.logo_url.url }}</p>
+  </div>
+  {% endif %}
+
+  <label style="display:block;margin:1rem 0 .2rem;color:#8b949e;">Favicon (browser tab icon)</label>
+  <input type="file" name="favicon_file" accept="image/*,.ico" style="width:100%;padding:.5rem;color:#e2e8f0;">
+  {% if settings.get('favicon_url', {}).get('url') %}
+  <div style="margin-top:.5rem;">
+    <img src="{{ settings.favicon_url.url }}" alt="favicon" style="height:32px;width:32px;object-fit:contain;background:#0d1117;border-radius:4px;border:1px solid #30363d;">
+    <p style="font-size:.75rem;color:#8b949e;margin-top:.25rem;">{{ settings.favicon_url.url }}</p>
+  </div>
+  {% endif %}
+
+  <label style="display:block;margin:1rem 0 .2rem;color:#8b949e;">Homepage Background</label>
+  <input type="file" name="home_bg_file" accept="image/*" style="width:100%;padding:.5rem;color:#e2e8f0;">
+  {% if settings.get('home_bg_url', {}).get('url') %}
+  <div style="margin-top:.5rem;">
+    <img src="{{ settings.home_bg_url.url }}" alt="bg" style="max-width:100%;max-height:140px;object-fit:cover;border-radius:8px;border:1px solid #30363d;">
+    <p style="font-size:.75rem;color:#8b949e;margin-top:.25rem;">{{ settings.home_bg_url.url }}</p>
+  </div>
+  {% endif %}
+
+  <button type="submit" style="margin-top:1.25rem;width:100%;padding:.75rem;background:linear-gradient(135deg,#00f5ff,#b026ff);border:none;border-radius:6px;font-weight:600;cursor:pointer;">Upload & Save</button>
+</form>
+{% endblock %}

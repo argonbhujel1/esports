@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Games{% endblock %}
+{% block content %}
+<h1>Games</h1>
+<p style="margin:1rem 0;"><a href="{{ url_for('game_create') }}" style="color:#00f5ff;">+ Create Game</a></p>
+<table style="width:100%;border-collapse:collapse;">
+  <thead>
+    <tr style="text-align:left;color:#8b949e;">
+      <th style="padding:.5rem;">ID</th>
+      <th>Icon</th>
+      <th>Name</th>
+      <th>Slug</th>
+      <th>Active</th>
+      <th>Order</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for g in games %}
+  <tr style="border-top:1px solid #21262d;">
+    <td style="padding:.75rem;">{{ g.id }}</td>
+    <td>
+      {% if g.icon_url %}
+      <img src="{{ g.icon_url }}" alt="" style="height:36px;width:36px;object-fit:cover;border-radius:6px;" onerror="this.style.display='none'">
+      {% else %}—{% endif %}
+    </td>
+    <td>{{ g.name }}</td>
+    <td>{{ g.slug }}</td>
+    <td>{{ 'Yes' if g.is_active else 'No' }}</td>
+    <td>{{ g.sort_order }}</td>
+    <td>
+      <a href="{{ url_for('game_edit', gid=g.id) }}" style="color:#00f5ff;margin-right:.5rem;">Edit</a>
+      <form method="POST" action="{{ url_for('game_delete', gid=g.id) }}" style="display:inline;" onsubmit="return confirm('Deactivate this game?');">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" style="background:none;border:none;color:#ff4d6a;cursor:pointer;font-size:.9rem;">Delete</button>
+      </form>
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="7" style="padding:1.5rem;color:#8b949e;">No games.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

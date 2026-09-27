@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ item.title if item else 'News' }}{% endblock %}
+{% block content %}
+<section class="section" style="padding-top:6rem;">
+  {% if item %}
+  <article class="glass" style="padding:2rem;max-width:800px;">
+    <h1 class="font-display" style="font-size:1.8rem;margin-bottom:0.75rem;">{{ item.title }}</h1>
+    <p class="text-muted" style="font-size:.85rem;margin-bottom:1.5rem;">
+      {{ item.published_at.strftime('%d %b %Y') if item.published_at else '' }}
+    </p>
+    {% if item.image_url %}
+    <img src="{{ item.image_url }}" alt="{{ item.title }}" style="border-radius:8px;margin-bottom:1.5rem;max-height:320px;object-fit:cover;width:100%;">
+    {% endif %}
+    <div style="line-height:1.8;white-space:pre-wrap;">{{ item.content }}</div>
+  </article>
+  {% else %}
+  <p class="text-muted">Article not found.</p>
+  {% endif %}
+  <p style="margin-top:1.5rem;"><a href="{{ url_for('news_list') }}">← Back to News</a></p>
+</section>
+{% endblock %}

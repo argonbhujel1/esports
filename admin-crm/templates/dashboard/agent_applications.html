@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Agent Applications{% endblock %}
+{% block content %}
+<h1>Agent Applications</h1>
+<table style="width:100%;border-collapse:collapse;margin-top:1rem;">
+  <thead>
+    <tr style="text-align:left;color:#8b949e;">
+      <th style="padding:.5rem;">Name</th>
+      <th>Email</th>
+      <th>Mobile</th>
+      <th>Status</th>
+      <th>Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for a in applications %}
+  <tr style="border-top:1px solid #21262d;">
+    <td style="padding:.75rem;">{{ a.full_name }}</td>
+    <td>{{ a.email }}</td>
+    <td>{{ a.mobile }}</td>
+    <td>{{ a.status }}</td>
+    <td>{{ a.created_at.strftime('%d %b %Y') if a.created_at else '—' }}</td>
+    <td>
+      {% if a.status in ['PENDING', 'UNDER_REVIEW'] %}
+      <form method="POST" action="{{ url_for('agent_application_approve', app_id=a.id) }}" style="display:inline;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" style="background:#39ff14;color:#0a0a0f;border:none;padding:.3rem .7rem;border-radius:4px;cursor:pointer;font-size:.8rem;">Activate</button>
+      </form>
+      <form method="POST" action="{{ url_for('agent_application_reject', app_id=a.id) }}" style="display:inline;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" style="background:#ff4d6a;color:#fff;border:none;padding:.3rem .7rem;border-radius:4px;cursor:pointer;font-size:.8rem;">Reject</button>
+      </form>
+      {% else %}
+      —
+      {% endif %}
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="6" style="padding:1.5rem;color:#8b949e;">No applications yet. Users apply via Become Agent.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

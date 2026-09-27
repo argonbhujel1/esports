@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<section class="hero"{% if brand_home_bg %} style="background-image:linear-gradient(rgba(10,10,15,0.75),rgba(10,10,15,0.9)),url('{{ brand_home_bg }}');background-size:cover;background-position:center;"{% endif %}>
+  <div style="position:relative;z-index:1;">
+    <span class="glass" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.4rem 1rem;font-size:0.85rem;color:var(--neon-cyan);margin-bottom:1.5rem;">
+      <span style="width:8px;height:8px;border-radius:50%;background:var(--neon-green);animation:pulse 1.5s infinite;"></span>
+      Live Matches Happening Now
+    </span>
+    <h1>ENTER THE<br><span>ARENA</span></h1>
+    <p>Compete in high-stakes tournaments, join exclusive rooms, climb the leaderboard and win real prizes.</p>
+    <div class="hero-actions">
+      <a href="{{ url_for('register') }}" class="btn btn-neon">▶ Start Competing</a>
+      <a href="{{ url_for('tournaments_list') }}" class="btn btn-outline">🏆 View Tournaments</a>
+    </div>
+    <div class="stats">
+      <div class="stat-card glass">
+        <div class="stat-value neon-text">12.5K+</div>
+        <div class="stat-label">Active Players</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-value neon-text">340+</div>
+        <div class="stat-label">Tournaments</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-value neon-text">₹48L+</div>
+        <div class="stat-label">Prize Paid</div>
+      </div>
+      <div class="stat-card glass">
+        <div class="stat-value neon-text">1.2K+</div>
+        <div class="stat-label">Matches Daily</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">🎮 Featured Games</h2>
+    <a href="{{ url_for('games_list') }}">View All →</a>
+  </div>
+  <div class="grid-5">
+    {% for game in games %}
+    <a href="{{ url_for('game_detail', slug=game.slug) }}" class="card glass">
+      <div class="card-icon">🎯</div>
+      <h3 style="font-weight:600;margin-bottom:0.25rem;">{{ game.name }}</h3>
+      <p style="font-size:0.8rem;color:var(--text-muted);">{{ game.description or 'Compete now' }}</p>
+    </a>
+    {% else %}
+    <div class="card glass"><div class="card-icon">🎮</div><h3>PUBG Mobile</h3></div>
+    <div class="card glass"><div class="card-icon">🔥</div><h3>Free Fire</h3></div>
+    <div class="card glass"><div class="card-icon">⚔️</div><h3>Valorant</h3></div>
+    <div class="card glass"><div class="card-icon">🛡️</div><h3>Mobile Legends</h3></div>
+    <div class="card glass"><div class="card-icon">🔫</div><h3>COD Mobile</h3></div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="section-header">
+    <h2 class="section-title">🏆 Upcoming Tournaments</h2>
+    <a href="{{ url_for('tournaments_list') }}">View All →</a>
+  </div>
+  <div class="glass" style="overflow:hidden;">
+    <table>
+      <thead>
+        <tr>
+          <th>Tournament</th>
+          <th>Game</th>
+          <th>Entry Fee</th>
+          <th>Prize Pool</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in tournaments %}
+        <tr>
+          <td style="font-weight:500;">{{ t.name }}</td>
+          <td>{{ t.game.name if t.game else '—' }}</td>
+          <td>₹{{ t.entry_fee }}</td>
+          <td style="color:var(--neon-green);">₹{{ t.prize_pool }}</td>
+          <td><span style="font-size:0.75rem;padding:0.2rem 0.5rem;border-radius:4px;background:rgba(0,245,255,0.1);color:var(--neon-cyan);">{{ t.status }}</span></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:2rem;">No upcoming tournaments yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section" style="text-align:center;">
+  <div class="glass" style="padding:3rem 2rem;max-width:700px;margin:0 auto;">
+    <div style="font-size:2.5rem;margin-bottom:1rem;">🛡️</div>
+    <h2 class="font-display" style="font-size:1.8rem;margin-bottom:0.75rem;">Ready to Dominate?</h2>
+    <p style="color:var(--text-muted);margin-bottom:1.5rem;">Create your account in seconds. Secure wallet. Fair play. Instant prizes.</p>
+    <a href="{{ url_for('register') }}" class="btn btn-neon">Create Free Account →</a>
+  </div>
+</section>
+
+<style>
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+</style>
+{% endblock %}

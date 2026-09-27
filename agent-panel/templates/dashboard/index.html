@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Welcome, {{ current_user.username }}</h1>
+<div class="stats-grid">
+  <div class="stat"><div class="num">{{ assigned_count }}</div><div class="lbl">Assigned Users</div></div>
+  <div class="stat"><div class="num">₹{{ "%.2f"|format(agent.total_loaded or 0) }}</div><div class="lbl">Total Loaded</div></div>
+  <div class="stat"><div class="num">₹{{ "%.2f"|format(agent.total_commission or 0) }}</div><div class="lbl">Commission</div></div>
+  <div class="stat"><div class="num">{{ agent.status }}</div><div class="lbl">Status</div></div>
+</div>
+{% endblock %}

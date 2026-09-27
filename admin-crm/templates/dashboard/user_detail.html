@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}User {{ user.username }}{% endblock %}
+{% block content %}
+<h1>User: {{ user.username }}</h1>
+<div style="background:#161b22;padding:1.25rem;border-radius:10px;border:1px solid #21262d;max-width:520px;margin:1rem 0;">
+  <p><strong>ID:</strong> {{ user.id }}</p>
+  <p style="margin-top:.4rem;"><strong>Email:</strong> {{ user.email or '—' }}</p>
+  <p style="margin-top:.4rem;"><strong>Mobile:</strong> {{ user.mobile or '—' }}</p>
+  <p style="margin-top:.4rem;"><strong>Role:</strong> {{ user.role }} · <strong>Status:</strong> {{ user.status }}</p>
+  <p style="margin-top:.4rem;"><strong>Referral:</strong> {{ user.referral_code }}</p>
+  {% if wallet %}
+  <hr style="border-color:#21262d;margin:1rem 0;">
+  <p><strong>Available:</strong> ₹{{ wallet.available_balance }}</p>
+  <p><strong>Locked:</strong> ₹{{ wallet.locked_balance }}</p>
+  <p><strong>Bonus:</strong> ₹{{ wallet.bonus_balance }}</p>
+  {% endif %}
+</div>
+<p><a href="{{ url_for('users_list') }}" style="color:#00f5ff;">← Back to Users</a></p>
+{% endblock %}

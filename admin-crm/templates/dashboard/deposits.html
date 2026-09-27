@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Deposits{% endblock %}
+{% block content %}
+<h1>Deposit / Load Requests</h1>
+<table style="width:100%;border-collapse:collapse;margin-top:1rem;">
+  <thead>
+    <tr style="text-align:left;color:#8b949e;">
+      <th style="padding:.5rem;">ID</th>
+      <th>User</th>
+      <th>Amount</th>
+      <th>Status</th>
+      <th>Receipt</th>
+      <th>Ref</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for d in deposits %}
+  <tr style="border-top:1px solid #21262d;">
+    <td style="padding:.75rem;">#{{ d.id }}</td>
+    <td>{{ d.user_id }}</td>
+    <td>₹{{ d.amount }}</td>
+    <td>{{ d.status }}</td>
+    <td>
+      {% if d.receipt_url %}
+      <a href="{{ d.receipt_url }}" target="_blank" style="color:#00f5ff;">View</a>
+      {% else %}—{% endif %}
+    </td>
+    <td style="font-size:.8rem;">{{ d.payment_reference or '—' }}</td>
+    <td>
+      {% if d.status == 'PENDING' %}
+      <form method="POST" action="{{ url_for('deposit_approve', did=d.id) }}" style="display:inline;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" style="background:#39ff14;color:#0a0a0f;border:none;padding:.3rem .7rem;border-radius:4px;cursor:pointer;font-size:.8rem;">Approve & Load</button>
+      </form>
+      {% else %}—{% endif %}
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="7" style="padding:1.5rem;color:#8b949e;">No deposit requests.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

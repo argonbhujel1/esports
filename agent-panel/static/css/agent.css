@@ -1,0 +1,24 @@
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#0f1117;color:#e2e8f0;min-height:100vh}
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+.sidebar{background:#161b22;padding:1.5rem 1rem;border-right:1px solid #21262d}
+.logo{font-weight:700;font-size:1.1rem;margin-bottom:1.5rem;color:#39ff14}
+.sidebar a{display:block;padding:.6rem .8rem;color:#8b949e;border-radius:6px;text-decoration:none;margin-bottom:2px;font-size:.9rem}
+.sidebar a:hover{background:#21262d;color:#39ff14}
+.content{padding:2rem}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin-top:1.5rem}
+.stat{background:#161b22;border:1px solid #21262d;border-radius:10px;padding:1.2rem;text-align:center}
+.stat .num{font-size:1.4rem;font-weight:700;color:#39ff14}
+.stat .lbl{font-size:.8rem;color:#8b949e;margin-top:.3rem}
+.login-box{max-width:360px;margin:10vh auto;background:#161b22;padding:2rem;border-radius:12px;border:1px solid #21262d;text-align:center}
+.login-box h1{color:#39ff14;margin-bottom:.3rem}
+.login-box input{width:100%;padding:.7rem;margin-bottom:.8rem;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e2e8f0}
+.login-box button{width:100%;padding:.75rem;background:#39ff14;border:none;border-radius:6px;font-weight:600;cursor:pointer;color:#0a0a0f}
+.form-card{max-width:400px;background:#161b22;padding:1.5rem;border-radius:10px;border:1px solid #21262d}
+.form-card label{display:block;font-size:.85rem;color:#8b949e;margin:0.8rem 0 0.3rem}
+.form-card input{width:100%;padding:.7rem;background:#0d1117;border:1px solid #30363d;border-radius:6px;color:#e2e8f0}
+.form-card button{margin-top:1rem;width:100%;padding:.75rem;background:#39ff14;border:none;border-radius:6px;font-weight:600;cursor:pointer}
+.flash{padding:.7rem 1rem;border-radius:6px;margin-bottom:1rem;font-size:.9rem}
+.flash-success{background:rgba(57,255,20,.12);color:#39ff14}
+.flash-error{background:rgba(255,0,80,.12);color:#ff4d6a}
+h1{font-size:1.5rem;margin-bottom:1rem}

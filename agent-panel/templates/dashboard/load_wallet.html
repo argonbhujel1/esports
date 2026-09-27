@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Load Wallet{% endblock %}
+{% block content %}
+<h1>Load User Wallet</h1>
+<form method="POST" class="form-card">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <label>Username</label>
+  <input type="text" name="username" required placeholder="User's username">
+  <label>Amount (NPR)</label>
+  <input type="number" name="amount" step="0.01" min="1" required placeholder="100">
+  <button type="submit">Load Wallet</button>
+</form>
+{% endblock %}

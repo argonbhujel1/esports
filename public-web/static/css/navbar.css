@@ -1,0 +1,9 @@
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;height:var(--nav-h);display:flex;align-items:center;padding:0 1.5rem}
+.navbar-inner{max-width:var(--max-w);width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:var(--font-display);font-weight:700;font-size:1.25rem;color:#fff;display:flex;align-items:center;gap:.5rem}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--neon-cyan),var(--neon-purple));border-radius:8px;display:flex;align-items:center;justify-content:center}
+.nav-links{display:flex;gap:1.75rem}
+.nav-links a{color:var(--text-muted);font-size:.9rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--neon-cyan)}
+.nav-actions{display:flex;gap:.75rem}
+@media(max-width:768px){.nav-links{display:none}}
